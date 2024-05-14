@@ -14,6 +14,10 @@ class Post(models.Model):
     #The sorting is defined in a class - Meta to sort by publish field
     class Meta:
         ordering = ['-publish']
+        #Adding indexes in descending (- before field publish)
+        indexes = [
+            models.Index(fields=['-publish']),
+        ]
     def __str__(self):
         return self.title
     
