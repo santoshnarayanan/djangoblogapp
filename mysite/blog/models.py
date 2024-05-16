@@ -3,6 +3,12 @@ from django.conf import settings
 from django.db import models
 from django.utils import timezone
 
+class PublishedManager(models.Manager):
+    def get_queryset(self):
+        return (
+            super().get_queryset().filter(status=Post.Status.PUBLISHED)
+        )
+
 class Post(models.Model):
     class Status(models.TextChoices):
         DRAFT = 'DF', 'Draft'
@@ -21,6 +27,8 @@ class Post(models.Model):
                               choices=Status, 
                               default=Status.DRAFT) #status field
     #The sorting is defined in a class - Meta to sort by publish field
+    objects = models.Manager() # The default manager
+    published = PublishedManager() # Our custom manager
     class Meta:
         ordering = ['-publish']
         #Adding indexes in descending (- before field publish)
@@ -30,3 +38,4 @@ class Post(models.Model):
     def __str__(self):
         return self.title
     
+
