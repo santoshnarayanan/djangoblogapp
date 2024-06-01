@@ -4,6 +4,7 @@ from .forms import EmailPostForm, CommentForm
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_POST
 from django.core.paginator import Paginator
+from django.db.models import Count
 from taggit.models import Tag
 from .models import Post
 
@@ -16,7 +17,7 @@ def post_list(request, tag_slug=None):
         post_list = post_list.filter(tags__in=[tag])
     # Pagination with 3 posts per page
     paginator = Paginator(post_list, 3)
-    page_number = request.GET.get('page',1)
+    page_number = request.GET.get('page', 1)
     try:
         posts = paginator.page(page_number)
     except PageNotAnInteger:
@@ -98,7 +99,32 @@ def post_detail(request, year, month, day, post):
         publish__day=day,
         status=Post.Status.PUBLISHED,
     )
-    return render(request, "blog/post/detail.html", {"post": post})
+
+    # list of active comments for this post
+    comments = post.comments.filter(active=True)
+
+    # Form for users to comment
+    form = CommentForm()
+
+    # List of similar posts, pass flat=True to get a list of IDs - single value
+    post_tags_ids = post.tags.values_list('id', flat=True)
+    # You get all posts that contain any of these tags, excluding the current post itself.
+    similar_posts = Post.published.filter(
+        tags__in=post_tags_ids
+    ).exclude(id=post.id)
+    # get only 4 similar posts
+    # Count aggregation function to generate a calculated field—same_tags—that contains
+    # the number of tags shared with all the tags queried.
+    similar_posts = similar_posts.annotate(same_tags=Count('tags')
+                                           ).order_by('-same_tags', '-publish')[:4]
+    return render(request,
+                  "blog/post/detail.html",
+                  {
+                      "post": post,
+                      "comments": comments,
+                      "form": form,
+                      "similar_posts": similar_posts
+                  })
 
 
 @require_POST
@@ -127,5 +153,3 @@ def post_comment(request, post_id):
             'comment': comment
         }
     )
-
-    
