@@ -1,6 +1,9 @@
+import markdown
+from django.utils.safestring import mark_safe
 from django.db.models import Count
 from django import template
 from ..models import Post
+
 
 register = template.Library()
 
@@ -30,3 +33,10 @@ context to render the specified template
 def show_latest_posts(count=5):
     latest_posts = Post.published.order_by('-publish')[:count]
     return {'latest_posts': latest_posts}
+
+"""
+create a filter to convert markdown to html
+"""
+@register.filter(name='markdown')
+def markdown_format(text):
+    return mark_safe(markdown.markdown(text))
