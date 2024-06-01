@@ -1,3 +1,4 @@
+from django.db.models import Count
 from django import template
 from ..models import Post
 
@@ -9,6 +10,16 @@ creating a simple tag to retrieve the total posts that have been published on th
 @register.simple_tag
 def total_posts():
     return Post.published.count()
+
+"""
+create a tag to display the most commented posts
+"""
+@register.simple_tag
+def get_most_commented_posts(count=5):
+    return Post.published.annotate(
+        total_comments=Count('comments')
+        ).order_by('-total_comments')[:count]
+
 
 """
 create another tag to display the latest posts in the sidebar of the blog
