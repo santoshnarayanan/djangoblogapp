@@ -3,6 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from taggit.managers import TaggableManager
 
 class Comment(models.Model):
     post = models.ForeignKey('Post', on_delete=models.CASCADE, related_name='comments')
@@ -50,6 +51,7 @@ class Post(models.Model):
     # The sorting is defined in a class - Meta to sort by publish field
     objects = models.Manager()  # The default manager
     published = PublishedManager()  # Our custom manager
+    tags = TaggableManager()
 
     class Meta:
         ordering = ['-publish']
