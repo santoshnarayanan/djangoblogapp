@@ -1,16 +1,16 @@
 **Building a Blog Application**
 
-Installing Python
-•Creating a Python virtual environment
-•Installing Django
-•Creating and configuring a Django project
-•Building a Django application
-•Designing data models
-•Creating and applying model migrations
-•Setting up an administration site for your models
-•Working with QuerySets and model managers
-Building views, templates, and URLs
-•Understanding the Django request/response cycle
+1. Installing Python
+2. •Creating a Python virtual environment
+3. •Installing Django
+4. •Creating and configuring a Django project
+5. •Building a Django application
+6. •Designing data models
+7. •Creating and applying model migrations
+8. •Setting up an administration site for your models
+9. •Working with QuerySets and model managers
+10. Building views, templates, and URLs
+11. •Understanding the Django request/response cycle
 
 
 **This project is divided into 4 branches**
