@@ -18,4 +18,4 @@
 **Environment and Software -**
  1. **OS  -** Fedora Linux OS version 40
  2. **IDE -** Visual Studio code and Pycharm latest version
- 3  **Frameworks - ** Python 3.12 , Django 5
+ 3. **Frameworks -** Python 3.12 and Django 5
