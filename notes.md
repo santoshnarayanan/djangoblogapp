@@ -24,16 +24,33 @@ python3 -m django --version
 ```  
 django-admin startproject mysite
 ```
-# run migration / different port
+
+# Create inital migration
+```
+python3 manage.py makemigrations blog
+```
+
+# Inspect the SQL output of your first migration
+```
+python3 manage.py sqlmigrate blog 0001
+```
+
+# run migration 
 ``` 
 cd mysite
 python3 manage.py migrate
-python manage.py migrate 8080
 ```
-# Run Server
+# Run Server / different port
 ```
 python3 manage.py runserver
+python3 manage.py runserver 8080
 ```
+
+# Create superuser
+```
+python3 manage.py createsuperuser
+```
+
 
 # ModuleNotFoundError: No module named 'psycopg2'
 ```
